@@ -20,41 +20,48 @@
     </form>
 
     <script>
-        function authenticateAndSubmit() {
+        async function authenticateAndSubmit() {
             // Replace with your actual authentication endpoint
-            var authUrl = 'https://srvwsm001.imagoverum.com/M42Services/api/ApiToken/GenerateAccessTokenFromApiToken/';
-            
+            var authUrl = 'https://twe044srv.imagoverum.com/M42Services/api/ApiToken/GenerateAccessTokenFromApiToken/';
+
             // Replace 'YOUR_API_TOKEN' with the actual API token
-            var apiToken = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1bmlxdWVfbmFtZSI6ImltYWdvdmVydW0uY29tXFxBZG1pbmlzdHJhdG9yIiwibmFtZWlkIjoiaW1hZ292ZXJ1bS5jb21cXEFkbWluaXN0cmF0b3IiLCJVc2VyRnJhZ21lbnRJZCI6ImRiZWU5NzYyLTk4MGEtZTUxMS04MGQ4LTAwNTA1NjJmOTUxNiIsImlzcyI6Imh0dHBzOi8vc3RzLm1hdHJpeDQyLmNvbSIsImF1ZCI6InVybjptYXRyaXg0MkFwaSIsImV4cCI6MjE0NzQ4MzY0NCwibmJmIjoxNzA3MTIyNDA0fQ.egcuyHYrWjyt7m9dc2nzVnkSTR9nfDHUxzixguuiS5w';
+            var apiToken = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...';
 
             var authData = {
                 apiToken: apiToken
             };
 
-            // Step 1: Authenticate and obtain access token
-            var authRequest = new XMLHttpRequest();
-            authRequest.open('POST', authUrl, true);
-            authRequest.setRequestHeader("Content-Type", "application/json");
+            try {
+                // Step 1: Authenticate and obtain access token
+                const authResponse = await fetch(authUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(authData),
+                });
 
-            authRequest.onreadystatechange = function () {
-                if (authRequest.readyState == 4 && authRequest.status == 200) {
-                    var accessToken = JSON.parse(authRequest.responseText).accessToken;
-
-                    // Step 2: Get form data
-                    var summary = document.getElementById("summary").value;
-                    var description = document.getElementById("description").value;
-
-                    // Step 3: Make REST API call with access token
-                    sendToITSM(summary, description, accessToken);
+                if (!authResponse.ok) {
+                    throw new Error('Authentication failed');
                 }
-            };
 
-            authRequest.send(JSON.stringify(authData));
+                const { accessToken } = await authResponse.json();
+
+                // Step 2: Get form data
+                var summary = document.getElementById("summary").value;
+                var description = document.getElementById("description").value;
+
+                // Step 3: Make REST API call with access token
+                await sendToITSM(summary, description, accessToken);
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error submitting form. Please try again.');
+            }
         }
 
-        function sendToITSM(summary, description, accessToken) {
+        async function sendToITSM(summary, description, accessToken) {
             // Replace the following URL with your actual ITSM API endpoint
-            var apiUrl = 'https://srvwsm001.imagoverum.com/m42Services/api/ticket/Create?activityType=0';
+            var apiUrl = 'https://twe044srv.imagoverum.com/m42Services/api/ticket/Create?activityType=0';
 
             // Create data object
             var data = {
@@ -63,28 +70,31 @@
                 // Add other properties as needed based on your ITSM API requirements
             };
 
-            // Make REST API call with access token
-            var apiRequest = new XMLHttpRequest();
-            apiRequest.open('POST', apiUrl, true);
-            apiRequest.setRequestHeader("Content-Type", "application/json");
-            apiRequest.setRequestHeader('Authorization', 'Bearer ' + accessToken);
+            try {
+                // Make REST API call with access token
+                const apiResponse = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + accessToken,
+                    },
+                    body: JSON.stringify(data),
+                });
 
-            apiRequest.onreadystatechange = function () {
-                if (apiRequest.readyState == 4) {
-                    if (apiRequest.status == 200) {
-                        // Handle successful API call
-                        alert('Form submitted successfully!');
-                    } else {
-                        // Handle API call errors
-                        console.error('Error:', apiRequest.statusText);
-                        alert('Error submitting form. Please try again.');
-                    }
+                if (!apiResponse.ok) {
+                    throw new Error('API call failed');
                 }
-            };
 
-            apiRequest.send(JSON.stringify(data));
+                // Handle successful API call
+                alert('Form submitted successfully!');
+            } catch (error) {
+                // Handle API call errors
+                console.error('Error:', error);
+                alert('Error submitting form. Please try again.');
+            }
         }
     </script>
 
 </body>
 </html>
+
