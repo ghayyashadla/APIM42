@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ITSM Form</title>
+</head>
+<body>
+
+    <h1>ITSM Form</h1>
+
+    <form id="itsmForm">
+        <label for="summary">Summary:</label>
+        <input type="text" id="summary" name="summary" required><br>
+
+        <label for="description">Description:</label>
+        <textarea id="description" name="description" required></textarea><br>
+
+        <button type="button" onclick="authenticateAndSubmit()">Submit</button>
+    </form>
+
+    <script>
+        function authenticateAndSubmit() {
+            // Replace with your actual authentication endpoint
+            var authUrl = 'https://srvwsm001.imagoverum.com/M42Services/api/ApiToken/GenerateAccessTokenFromApiToken/';
+            
+            // Replace 'YOUR_API_TOKEN' with the actual API token
+            var apiToken = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1bmlxdWVfbmFtZSI6ImltYWdvdmVydW0uY29tXFxBZG1pbmlzdHJhdG9yIiwibmFtZWlkIjoiaW1hZ292ZXJ1bS5jb21cXEFkbWluaXN0cmF0b3IiLCJVc2VyRnJhZ21lbnRJZCI6ImRiZWU5NzYyLTk4MGEtZTUxMS04MGQ4LTAwNTA1NjJmOTUxNiIsImlzcyI6Imh0dHBzOi8vc3RzLm1hdHJpeDQyLmNvbSIsImF1ZCI6InVybjptYXRyaXg0MkFwaSIsImV4cCI6MjE0NzQ4MzY0NCwibmJmIjoxNzA3MTIyNDA0fQ.egcuyHYrWjyt7m9dc2nzVnkSTR9nfDHUxzixguuiS5w';
+
+            var authData = {
+                apiToken: apiToken
+            };
+
+            // Step 1: Authenticate and obtain access token
+            var authRequest = new XMLHttpRequest();
+            authRequest.open('POST', authUrl, true);
+            authRequest.setRequestHeader("Content-Type", "application/json");
+
+            authRequest.onreadystatechange = function () {
+                if (authRequest.readyState == 4 && authRequest.status == 200) {
+                    var accessToken = JSON.parse(authRequest.responseText).accessToken;
+
+                    // Step 2: Get form data
+                    var summary = document.getElementById("summary").value;
+                    var description = document.getElementById("description").value;
+
+                    // Step 3: Make REST API call with access token
+                    sendToITSM(summary, description, accessToken);
+                }
+            };
+
+            authRequest.send(JSON.stringify(authData));
+        }
+
+        function sendToITSM(summary, description, accessToken) {
+            // Replace the following URL with your actual ITSM API endpoint
+            var apiUrl = 'https://srvwsm001.imagoverum.com/m42Services/api/ticket/Create?activityType=0';
+
+            // Create data object
+            var data = {
+                Subject: summary,
+                Description: description,
+                // Add other properties as needed based on your ITSM API requirements
+            };
+
+            // Make REST API call with access token
+            var apiRequest = new XMLHttpRequest();
+            apiRequest.open('POST', apiUrl, true);
+            apiRequest.setRequestHeader("Content-Type", "application/json");
+            apiRequest.setRequestHeader('Authorization', 'Bearer ' + accessToken);
+
+            apiRequest.onreadystatechange = function () {
+                if (apiRequest.readyState == 4) {
+                    if (apiRequest.status == 200) {
+                        // Handle successful API call
+                        alert('Form submitted successfully!');
+                    } else {
+                        // Handle API call errors
+                        console.error('Error:', apiRequest.statusText);
+                        alert('Error submitting form. Please try again.');
+                    }
+                }
+            };
+
+            apiRequest.send(JSON.stringify(data));
+        }
+    </script>
+
+</body>
+</html>
