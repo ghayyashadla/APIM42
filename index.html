@@ -45,16 +45,16 @@
                     throw new Error('Authentication failed');
                 }
 
-                const { accessToken } = await authResponse.json();
+                const { RawToken } = await authResponse.json();
 
                 // Step 2: Get form data
                 var summary = document.getElementById("summary").value;
                 var description = document.getElementById("description").value;
 
                 // Step 3: Make REST API call with access token
-                await sendToITSM(summary, description, accessToken);
+                await sendToITSM(summary, description, RawToken);
             } catch (error) {
-                console.error('Error:', error);
+                console.error('Error during authentication:', error);
                 alert('Error submitting form. Please try again.');
             }
         }
@@ -89,7 +89,7 @@
                 alert('Form submitted successfully!');
             } catch (error) {
                 // Handle API call errors
-                console.error('Error:', error);
+                console.error('Error during API call:', error);
                 alert('Error submitting form. Please try again.');
             }
         }
@@ -97,4 +97,3 @@
 
 </body>
 </html>
-
