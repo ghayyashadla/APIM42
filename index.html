@@ -91,7 +91,7 @@
 </body>
 </html>
              -->
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <body>
 <button id="authorize-btn">Authorize</button>
 </body>
@@ -118,3 +118,56 @@ document.getElementById('authorize-btn').addEventListener('click', function() {
     xmlhttp.send();
 });
 </script>
+ -->
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ITSM Form</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1>ITSM Form</h1>
+    <form id="itsm-form">
+        <label for="user">User:</label>
+        <input type="text" id="user" name="user" required><br>
+        <label for="urgency">Urgency":</label>
+        <input type="number" id="urgency" name="urgency" required><br> <!-- Changed type to number for urgency -->
+        <label for="creator">Creator:</label>
+        <input type="text" id="creator" name="creator" required><br>
+        <label for="subject">Subject:</label>
+        <input type="text" id="subject" name="subject" required><br>
+        <label for="description">Description:</label>
+        <input type="text" id="description" name="description" required><br>
+        <label for="priority">Priority:</label>
+        <input type="number" id="priority" name="priority" required><br> <!-- Changed type to number for priority -->
+        <button type="button" onclick="submitForm()">Submit</button> <!-- Changed type to button to prevent default form submission -->
+    </form>
+
+    <script>function submitForm() {
+        var form = document.getElementById("itsm-form");
+        var formData = new FormData(form);
+    
+        var data = {};
+        formData.forEach(function(value, key){
+            data[key] = value;
+        });
+    
+        var rawBody = JSON.stringify(data);
+    
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "your_endpoint_url_here");
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.setRequestHeader("Authorization", "Basic " + btoa('dnZhbGVudGluZXx2MmdGQ3hVJQ==')); // Replace username and password with your credentials
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                console.log(xhr.responseText);
+                // Optionally, do something after successful submission
+            }
+        };
+        xhr.send(rawBody);
+    }
+    </script>
+</body>
+</html>
