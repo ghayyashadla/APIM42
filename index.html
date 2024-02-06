@@ -119,7 +119,7 @@ document.getElementById('authorize-btn').addEventListener('click', function() {
 });
 </script>
  -->
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -132,8 +132,8 @@ document.getElementById('authorize-btn').addEventListener('click', function() {
     <form id="itsm-form">
         <label for="user">User:</label>
         <input type="text" id="user" name="user" required><br>
-        <label for="urgency">Urgency":</label>
-        <input type="number" id="urgency" name="urgency" required><br> <!-- Changed type to number for urgency -->
+        <label for="urgency">Urgency:</label>
+        <input type="number" id="urgency" name="urgency" required><br>
         <label for="creator">Creator:</label>
         <input type="text" id="creator" name="creator" required><br>
         <label for="subject">Subject:</label>
@@ -141,37 +141,35 @@ document.getElementById('authorize-btn').addEventListener('click', function() {
         <label for="description">Description:</label>
         <input type="text" id="description" name="description" required><br>
         <label for="priority">Priority:</label>
-        <input type="number" id="priority" name="priority" required><br> <!-- Changed type to number for priority -->
-        <button type="button" onclick="submitForm()">Submit</button> <!-- Changed type to button to prevent default form submission -->
+        <input type="number" id="priority" name="priority" required><br>
+        <button type="button" onclick="submitForm()">Submit</button>
     </form>
 
-    <script>function submitForm() {
-        var form = document.getElementById("itsm-form");
-        var formData = new FormData(form);
-    
-        var data = {};
-        formData.forEach(function(value, key){
-            data[key] = value;
-        });
-    
-        var rawBody = JSON.stringify(data);
+    <script>
+        function submitForm() {
+            var form = document.getElementById("itsm-form");
+            var formData = new FormData(form);
+        
+            var data = {};
+            formData.forEach(function(value, key){
+                data[key] = value;
+            });
+        
+            var rawBody = JSON.stringify(data);
 
-    var xmlhttp = new XMLHttpRequest();
-xmlhttp.open('POST', 'https://twe044srv.imagoverum.com/m42Services/api/ticket/create?activitytype=5', true);
-xmlhttp.setRequestHeader('Authorization', 'Basic ' + 'dnZhbGVudGluZXx2MmdGQ3hVJQ=='  /*btoa("username:password)*/);
+            var xmlhttp = new XMLHttpRequest();
+            xmlhttp.open('POST', 'https://twe044srv.imagoverum.com/m42Services/api/ticket/create?activitytype=5', true);
+            xmlhttp.setRequestHeader('Authorization', 'Basic ' + btoa('dnZhbGVudGluZXx2MmdGQ3hVJQ=='));
 
-        // var xhr = new XMLHttpRequest();
-        // xhr.open("POST", "https://twe044srv.imagoverum.com/m42Services/api/ticket/create?activitytype=5");
-        // xhr.setRequestHeader("Content-Type", "application/json");
-        // xhr.setRequestHeader("Authorization", "Basic " + btoa('dnZhbGVudGluZXx2MmdGQ3hVJQ==')); // Replace username and password with your credentials
-        // xhr.onreadystatechange = function () {
-        //     if (xhr.readyState === 4 && xhr.status === 200) {
-        //         console.log(xhr.responseText);
-                // Optionally, do something after successful submission
-            }
-        };
-        xhr.send(rawBody);
-    }
+            xmlhttp.onreadystatechange = function () {
+                if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
+                    console.log(xmlhttp.responseText);
+                    // Optionally, do something after successful submission
+                }
+            };
+
+            xmlhttp.send(rawBody);
+        }
     </script>
 </body>
 </html>
