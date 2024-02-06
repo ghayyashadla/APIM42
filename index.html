@@ -101,7 +101,7 @@ document.getElementById('authorize-btn').addEventListener('click', function() {
     // Step 2: Exchange API token for Access Token
 
     var xmlhttp = new XMLHttpRequest();
-    xmlhttp.open('POST', 'http://twe044srv.imagoverum.com//M42Services/api/ApiToken/GenerateAccessTokenFromApiToken/', true);
+    xmlhttp.open('POST', 'https://twe044srv.imagoverum.com//M42Services/api/ApiToken/GenerateAccessTokenFromApiToken/', true);
     xmlhttp.setRequestHeader("Content-Type", "application/json");
     xmlhttp.setRequestHeader('Authorization', 'Bearer' + 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1bmlxdWVfbmFtZSI6ImltYWdvdmVydW0uY29tXFx2dmFsZW50aW5lIiwibmFtZWlkIjoiaW1hZ292ZXJ1bS5jb21cXHZ2YWxlbnRpbmUiLCJVc2VyRnJhZ21lbnRJZCI6IjRjOTc4NmUwLWEzMGEtZTUxMS04MGQ4LTAwNTA1NjJmOTUxNiIsImlzcyI6Imh0dHBzOi8vc3RzLm1hdHJpeDQyLmNvbSIsImF1ZCI6InVybjptYXRyaXg0MkFwaSIsImV4cCI6MjE0NzQ4MzY0NSwibmJmIjoxNzA3MTMwOTg1fQ.zXTiSZeoROQ6k4leAnnUm69hFuV3eBJtJDh6SV99GhY');
     xmlhttp.onreadystatechange = function() {
