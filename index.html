@@ -1,175 +1,34 @@
-<!-- <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ITSM Form</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-   
-
-    <button id="authorize-btn">Authorize</button>
-
-    <script>
-        document.getElementById('authorize-btn').addEventListener('click', function() {
-            // Authenticate with API token
-            const token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1bmlxdWVfbmFtZSI6ImltYWdvdmVydW0uY29tXFx2dmFsZW50aW5lIiwibmFtZWlkIjoiaW1hZ292ZXJ1bS5jb21cXHZ2YWxlbnRpbmUiLCJVc2VyRnJhZ21lbnRJZCI6IjRjOTc4NmUwLWEzMGEtZTUxMS04MGQ4LTAwNTA1NjJmOTUxNiIsImlzcyI6Imh0dHBzOi8vc3RzLm1hdHJpeDQyLmNvbSIsImF1ZCI6InVybjptYXRyaXg0MkFwaSIsImV4cCI6MjE0NzQ4MzY0NSwibmJmIjoxNzA3MTMwOTg1fQ.zXTiSZeoROQ6k4leAnnUm69hFuV3eBJtJDh6SV99GhY';
-            const headers = {
-                'Authorization': `Bearer ${token}`,
-                'Content-Type': 'application/json'
-            };
-
-            // Send authentication request to get bearer token
-            fetch('https://cors-anywhere.herokuapp.com/https://twe044srv.imagoverum.com/m42Services/api/ApiToken/GenerateAccessTokenFromApiToken', {
-                method: 'POST',
-                headers: headers
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Authentication failed');
-                }
-                return response.json();
-            })
-            .then(data => {
-                const accessToken = data.accessToken;
-                console.log('Bearer Token:', accessToken);
-
-                // After getting the bearer token, you can proceed to submit the form
-                submitFormWithBearerToken(accessToken);
-            })
-            .catch(error => {
-                console.error('Authentication failed:', error);
-                // Handle authentication error
-            });
-        });
-
-        function submitFormWithBearerToken(accessToken) {
-            const formData = new FormData(document.getElementById('itsm-form'));
-            const user = formData.get('user');
-            const urgency = formData.get('urgency');
-            const creator = formData.get('creator');
-            const subject = formData.get('subject');
-            const description = formData.get('description');
-            const priority = formData.get('priority');
-
-            const ticketData = {
-                user: user,
-                urgency: urgency,
-                creator: creator,
-                subject: subject,
-                description: description,
-                priority: priority
-            };
-
-            const ticketHeaders = {
-                'Authorization': `Bearer ${accessToken}`,
-                'Content-Type': 'application/json'
-            };
-
-            fetch('https://twe044srv.imagoverum.com/m42Services/api/ticket/create?activitytype=5', {
-                method: 'POST',
-                headers: ticketHeaders,
-                body: JSON.stringify(ticketData)
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then(data => {
-                console.log('Form submitted successfully:', data);
-                // Handle success response from the API
-            })
-            .catch(error => {
-                console.error('There was a problem with your fetch operation:', error);
-                // Handle error
-            });
-        }
-    </script>
-</body>
-</html>
-             -->
-<!-- <!DOCTYPE html>
-<body>
-<button id="authorize-btn">Authorize</button>
-</body>
-<script>
-
-document.getElementById('authorize-btn').addEventListener('click', function() {
-    // Step 2: Exchange API token for Access Token
-
-    var xmlhttp = new XMLHttpRequest();
-    xmlhttp.open('POST', 'https://twe044srv.imagoverum.com/M42Services/api/ApiToken/GenerateAccessTokenFromApiToken/', true);
-    xmlhttp.setRequestHeader("Content-Type", "application/json");
-    xmlhttp.setRequestHeader('Authorization', 'Bearer' + 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1bmlxdWVfbmFtZSI6ImltYWdvdmVydW0uY29tXFx2dmFsZW50aW5lIiwibmFtZWlkIjoiaW1hZ292ZXJ1bS5jb21cXHZ2YWxlbnRpbmUiLCJVc2VyRnJhZ21lbnRJZCI6IjRjOTc4NmUwLWEzMGEtZTUxMS04MGQ4LTAwNTA1NjJmOTUxNiIsImlzcyI6Imh0dHBzOi8vc3RzLm1hdHJpeDQyLmNvbSIsImF1ZCI6InVybjptYXRyaXg0MkFwaSIsImV4cCI6MjE0NzQ4MzY0NSwibmJmIjoxNzA3MTMwOTg1fQ.zXTiSZeoROQ6k4leAnnUm69hFuV3eBJtJDh6SV99GhY');
-    xmlhttp.onreadystatechange = function() {
-        if (this.readyState == 4 && this.status == 200) {
-            if (this.responseText !== null) {
-                var accessToken = JSON.parse(this.responseText).RawToken;
-                console.log('Access token obtained:', accessToken);
-                // Optionally, you can perform further actions after obtaining the access token
-            } else {
-                console.log('Not a valid or disabled API token');
-            }
-        }
-    };
-    xmlhttp.send();
-});
-</script>
- -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ITSM Form</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>cURL Request</title>
 </head>
 <body>
-    <h1>ITSM Form</h1>
-    <form id="itsm-form">
-        <label for="user">User:</label>
-        <input type="text" id="user" name="user" required><br>
-        <label for="urgency">Urgency:</label>
-        <input type="number" id="urgency" name="urgency" required><br>
-        <label for="creator">Creator:</label>
-        <input type="text" id="creator" name="creator" required><br>
-        <label for="subject">Subject:</label>
-        <input type="text" id="subject" name="subject" required><br>
-        <label for="description">Description:</label>
-        <input type="text" id="description" name="description" required><br>
-        <label for="priority">Priority:</label>
-        <input type="number" id="priority" name="priority" required><br>
-        <button type="button" onclick="submitForm()">Submit</button>
-    </form>
+    <button onclick="sendRequest()">Send Request</button>
 
     <script>
-        function submitForm() {
-            var form = document.getElementById("itsm-form");
-            var formData = new FormData(form);
-        
-            var data = {};
-            formData.forEach(function(value, key){
-                data[key] = value;
-            });
-        
-            var rawBody = JSON.stringify(data);
+        function sendRequest() {
+            var xhr = new XMLHttpRequest();
+            var url = 'https://twe044srv.imagoverum.com/m42Services/api/ApiToken/GenerateAccessTokenFromApiToken';
+            var params = ''; // You can include any parameters here if needed
 
-            var xmlhttp = new XMLHttpRequest();
-            xmlhttp.open('POST', 'https://twe044srv.imagoverum.com/m42Services/api/ticket/create?activitytype=5', true);
-            xmlhttp.setRequestHeader('Authorization', 'Basic ' + btoa('dnZhbGVudGluZXx2MmdGQ3hVJQ=='));
+            xhr.open('POST', url, true);
+            xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+            xhr.setRequestHeader('Authorization', 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1bmlxdWVfbmFtZSI6ImltYWdvdmVydW0uY29tXFx2dmFsZW50aW5lIiwibmFtZWlkIjoiaW1hZ292ZXJ1bS5jb21cXHZ2YWxlbnRpbmUiLCJVc2VyRnJhZ21lbnRJZCI6IjRjOTc4NmUwLWEzMGEtZTUxMS04MGQ4LTAwNTA1NjJmOTUxNiIsImlzcyI6Imh0dHBzOi8vc3RzLm1hdHJpeDQyLmNvbSIsImF1ZCI6InVybjptYXRyaXg0MkFwaSIsImV4cCI6MjE0NzQ4MzY0NSwibmJmIjoxNzA3MTMwOTg1fQ.zXTiSZeoROQ6k4leAnnUm69hFuV3eBJtJDh6SV99GhY');
+            xhr.setRequestHeader('Cookie', 'explicitLanguage=en-US');
 
-            xmlhttp.onreadystatechange = function () {
-                if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
-                    console.log(xmlhttp.responseText);
-                    // Optionally, do something after successful submission
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState == XMLHttpRequest.DONE) {
+                    console.log(xhr.responseText);
+                    // Handle the response here
                 }
-            };
+            }
 
-            xmlhttp.send(rawBody);
+            xhr.send(params);
         }
     </script>
 </body>
 </html>
+
