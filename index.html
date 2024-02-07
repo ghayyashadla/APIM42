@@ -6,29 +6,33 @@
     <title>cURL Request</title>
 </head>
 <body>
-    <button onclick="sendRequest()">Send Request</button>
+    <button id="authorize-btn">Authorize</button>
 
     <script>
-        function sendRequest() {
-            var xhr = new XMLHttpRequest();
-            var url = 'https://twe044srv.imagoverum.com/m42Services/api/ApiToken/GenerateAccessTokenFromApiToken';
-            var params = ''; // You can include any parameters here if needed
-
-            xhr.open('POST', url, true);
-            xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-            xhr.setRequestHeader('Authorization', 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1bmlxdWVfbmFtZSI6ImltYWdvdmVydW0uY29tXFx2dmFsZW50aW5lIiwibmFtZWlkIjoiaW1hZ292ZXJ1bS5jb21cXHZ2YWxlbnRpbmUiLCJVc2VyRnJhZ21lbnRJZCI6IjRjOTc4NmUwLWEzMGEtZTUxMS04MGQ4LTAwNTA1NjJmOTUxNiIsImlzcyI6Imh0dHBzOi8vc3RzLm1hdHJpeDQyLmNvbSIsImF1ZCI6InVybjptYXRyaXg0MkFwaSIsImV4cCI6MjE0NzQ4MzY0NSwibmJmIjoxNzA3MTMwOTg1fQ.zXTiSZeoROQ6k4leAnnUm69hFuV3eBJtJDh6SV99GhY');
-            xhr.setRequestHeader('Cookie', 'explicitLanguage=en-US');
-
-            xhr.onreadystatechange = function() {
-                if (xhr.readyState == XMLHttpRequest.DONE) {
-                    console.log(xhr.responseText);
-                    // Handle the response here
+        document.getElementById('authorize-btn').addEventListener('click', function() {
+            fetch('https://twe044srv.imagoverum.com/m42Services/api/ApiToken/GenerateAccessTokenFromApiToken', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1bmlxdWVfbmFtZSI6ImltYWdvdmVydW0uY29tXFx2dmFsZW50aW5lIiwibmFtZWlkIjoiaW1hZ292ZXJ1bS5jb21cXHZ2YWxlbnRpbmUiLCJVc2VyRnJhZ21lbnRJZCI6IjRjOTc4NmUwLWEzMGEtZTUxMS04MGQ4LTAwNTA1NjJmOTUxNiIsImlzcyI6Imh0dHBzOi8vc3RzLm1hdHJpeDQyLmNvbSIsImF1ZCI6InVybjptYXRyaXg0MkFwaSIsImV4cCI6MjE0NzQ4MzY0NSwibmJmIjoxNzA3MTMwOTg1fQ.zXTiSZeoROQ6k4leAnnUm69hFuV3eBJtJDh6SV99GhY'
                 }
-            }
-
-            xhr.send(params);
-        }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                var accessToken = data.RawToken;
+                console.log('Access token obtained:', accessToken);
+                // Optionally, you can perform further actions after obtaining the access token
+            })
+            .catch(error => {
+                console.error('There was a problem with the fetch operation:', error);
+            });
+        });
     </script>
+
 </body>
 </html>
-
